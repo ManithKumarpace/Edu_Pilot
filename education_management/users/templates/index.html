@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edupilot Milti Agent</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        header {
+            background-color: #33475b;
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        header p {
+            font-size: 1.2rem;
+            margin-bottom: 0;
+        }
+        .btn-signup {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 30px;
+            font-size: 1.2rem;
+            border-radius: 25px;
+        }
+        .search-filter-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        .featured-agents-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .featured-agent .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .featured-agent .card:hover {
+            transform: translateY(-5px);
+        }
+        .featured-agent .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        .featured-agent .card-text {
+            color: #6c757d;
+        }
+        .featured-agent .card {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .featured-agent .card-body {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <header class="text-center py-5" style="background-color: #33475b; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <h1 class="display-4 font-weight-bold mb-4">Key Challenges in School Administration</h1>
+        <p class="lead mb-3" style="font-size: 1.25rem; opacity: 0.9;">Addressing the inefficiencies and burdens faced by educators and administrators.</p>
+        <p class="lead mb-3" style="font-size: 1.25rem; opacity: 0.9;">Streamlining processes to enhance teaching and learning experiences.</p>
+        <p class="lead mb-0" style="font-size: 1.25rem; opacity: 0.9;">Discover solutions to reduce workload and improve information access.</p>
+    </header>
+
+    <div class="container">
+
+        <section class="search-filter-section">
+            <h2 class="text-center mb-4">Search</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <input type="text" class="form-control mb-3" placeholder="Search agents...">
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-agents-section">
+            <h2 class="text-center mb-4">Featured Agents</h2>
+            <div class="row">
+                <div class="col-md-4 featured-agent d-flex">
+                    <div class="card flex-fill h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Time Table Generator Agent</h5>
+                            <ul>
+                                <li>Automated Timetable Creation</li>
+                                <li>Smart Scheduling</li>
+                                <li>Easy Customization</li>
+                            </ul>
+                            <div class="mt-auto text-center">
+                                <a href="{% url 'edupilot:timetable' %}" class="btn btn-outline-primary" style="width: 50%;">Go</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 featured-agent d-flex">
+                    <div class="card flex-fill h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">EduHelper</h5>
+                            <p class="card-text">EduHelper is your personal assistant for solving academic doubts. Get instant help with your questions and enhance your learning experience.</p>
+                            <div class="mt-auto text-center">
+                                <a href="{% url 'edupilot:eduhelper' %}" class="btn btn-outline-primary" style="width: 50%;">Go</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 featured-agent d-flex">
+                    <div class="card flex-fill h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Web Design, SEO</h5>
+                            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad, ullam ipsa dolor aperiam unde reprehenderit veritatis odio aliquid debitis error.</p>
+                            <div class="mt-auto text-center">
+                                <a href="#" class="btn btn-outline-primary" style="width: 50%;">Go</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

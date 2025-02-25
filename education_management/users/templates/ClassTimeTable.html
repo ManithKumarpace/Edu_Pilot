@@ -1,0 +1,479 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edupilot Milti Agent</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        h1 {
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .input-group input {
+            flex: 1 1 200px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .input-group input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border: none;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        .table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .table th, .table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+        .table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .table tbody tr:nth-child(odd) {
+            background-color: #f8f9fa;
+        }
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+        .modal-content {
+            border-radius: 10px;
+        }
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .modal-body pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .csv-upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .csv-upload-section label {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .csv-upload-section input[type="file"] {
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .csv-upload-section input[type="file"]:hover {
+            background-color: #f8f9fa;
+            border-color: #0056b3;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">School Timetable Generator</h1>
+        
+        <!-- Note Section -->
+        <div class="alert alert-info text-center" role="alert">
+            Please add subjects based on priority, starting from 1 first.
+        </div>
+        
+        <!-- Button Section -->
+        <div class="d-flex justify-content-end mb-5">
+            <!-- <button class="btn btn-outline-primary" onclick="addRow()">Add Row</button> -->
+            <!-- <button class="btn btn-outline-success" onclick="generateTable()">Generate Table</button> -->
+            <button class="btn btn-outline-info" data-toggle="modal" data-target="#sampleCsvModal">View Sample CSV Format</button>
+            <!-- <button class="btn btn-outline-info" onclick="clearPage()">Clear</button> -->
+            <button class="btn btn-outline-secondary" onclick="window.history.back()">Go Back</button>
+        </div>
+        
+        <!-- Input Section -->
+        <!-- <div id="input-section">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Class" id="class-input">
+                <input type="text" class="form-control" placeholder="Period" id="period-input">
+                <input type="text" class="form-control" placeholder="Subject 1" id="subject1-input">
+                <input type="text" class="form-control" placeholder="Subject 2" id="subject2-input">
+                <input type="text" class="form-control" placeholder="Subject 3" id="subject3-input">
+                <input type="text" class="form-control" placeholder="Subject 4" id="subject4-input">
+                <input type="text" class="form-control" placeholder="Subject 5" id="subject5-input">
+                <input type="text" class="form-control" placeholder="Subject 6" id="subject6-input">
+                <input type="text" class="form-control" placeholder="Subject 7" id="subject7-input">
+                <input type="text" class="form-control" placeholder="Subject 8" id="subject8-input">
+                <input type="text" class="form-control" placeholder="Subject 9" id="subject9-input">
+                <input type="text" class="form-control" placeholder="Subject 10" id="subject10-input">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <h6><b>OR</b></h6>
+        </div> -->
+        <!-- CSV Upload Section -->
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="csv-upload-section mb-3">
+                <label for="csv-upload" class="form-label" style="font-size: 1.5rem;">Upload Timetable CSV File</label>
+                <input type="file" class="form-control" id="csv-upload" accept=".csv" name="subject_csv">
+            </div>
+
+            <!-- CSV Upload Section for Teachers -->
+            <div class="csv-upload-section mb-3">
+                <label for="teachers-csv-upload" class="form-label" style="font-size: 1.5rem;">Upload Teachers CSV File</label>
+                <input type="file" class="form-control" id="teachers-csv-upload" accept=".csv" name="teachers_csv">
+            </div>
+            <div class="csv-upload-section mb-3">
+                <button class="btn btn-outline-primary" type="submit">Generate Time Table</button>
+            </div>
+         </form>
+
+        <!-- Output Table -->
+        <!-- <div class="table-responsive">
+            <table class="table table-bordered" id="output-table">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Period</th>
+                        <th>Subject 1</th>
+                        <th>Subject 2</th>
+                        <th>Subject 3</th>
+                        <th>Subject 4</th>
+                        <th>Subject 5</th>
+                        <th>Subject 6</th>
+                        <th>Subject 7</th>
+                        <th>Subject 8</th>
+                        <th>Subject 9</th>
+                        <th>Subject 10</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+
+    <!-- Sample CSV Modal -->
+    <div class="modal fade" id="sampleCsvModal" tabindex="-1" aria-labelledby="sampleCsvModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sampleCsvModalLabel">Sample CSV Format</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <h5 class="m-3"><b>Sample Subjects CSV Format</b></h5>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Class</th>
+                                        <th>Period</th>
+                                        <th>Subject1</th>
+                                        <th>Subject2</th>
+                                        <th>Subject3</th>
+                                        <th>Subject4</th>
+                                        <th>Subject5</th>
+                                        <th>Subject6</th>
+                                        <th>Subject7</th>
+                                        <th>Subject8</th>
+                                        <th>Subject9</th>
+                                        <th>Subject10</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>4</td>
+                                        <td>Mathematics</td>
+                                        <td>English</td>
+                                        <td>Hindi</td>
+                                        <td>Arts</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>4</td>
+                                        <td>Mathematics</td>
+                                        <td>English</td>
+                                        <td>Hindi</td>
+                                        <td>Arts</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>5</td>
+                                        <td>Mathematics</td>
+                                        <td>Environmental Studies</td>
+                                        <td>English</td>
+                                        <td>Hindi</td>
+                                        <td>Arts</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button> -->
+                    <button type="button" class="btn btn-outline-primary" onclick="downloadSampleCsv()">Download Sample CSV</button>
+                </div>
+                <h5 class="modal-title m-3" id="sampleCsvModalLabel"><b>Sample Teachers CSV Format</b></h5>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Techer</th>
+                                        <th>Classes</th>
+                                        <th>Subject</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Arun</td>
+                                        <td>1,2</td>
+                                        <td>Mathematics</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bharath</td>
+                                        <td>2,4</td>
+                                        <td>English</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chaithra</td>
+                                        <td>3,5</td>
+                                        <td>Environmental Studies</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button> -->
+                    <button type="button" class="btn btn-outline-primary" onclick="downloadSampleTeacherCsv()">Download Sample CSV</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // Function to add a new row of inputs
+        function addRow() {
+            const inputSection = document.getElementById('input-section');
+            const newInputGroup = document.createElement('div');
+            newInputGroup.className = 'input-group';
+
+            const inputs = [
+                'Class', 'Period', 'Subject 1', 'Subject 2', 'Subject 3', 'Subject 4', 
+                'Subject 5', 'Subject 6', 'Subject 7', 'Subject 8', 'Subject 9', 'Subject 10'
+            ];
+
+            inputs.forEach((placeholder, index) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'form-control';
+                input.placeholder = placeholder;
+                input.id = `${placeholder.toLowerCase().replace(/ /g, '-')}-input-${index}`;
+                newInputGroup.appendChild(input);
+            });
+
+            inputSection.appendChild(newInputGroup);
+        }
+
+        // Function to generate the table
+        function generateTable() {
+            const inputGroups = document.querySelectorAll('#input-section .input-group');
+            const tableBody = document.querySelector('#output-table tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            inputGroups.forEach(group => {
+                const inputs = group.querySelectorAll('input');
+                const row = document.createElement('tr');
+
+                inputs.forEach(input => {
+                    const cell = document.createElement('td');
+                    cell.textContent = input.value;
+                    row.appendChild(cell);
+                });
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to handle CSV file upload
+        document.getElementById('csv-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const text = e.target.result;
+                    const rows = text.split('\n').map(row => row.split(','));
+                    const tableBody = document.querySelector('#output-table tbody');
+                    tableBody.innerHTML = ''; // Clear existing rows
+
+                    rows.forEach(row => {
+                        const tr = document.createElement('tr');
+                        row.forEach(cell => {
+                            const td = document.createElement('td');
+                            td.textContent = cell.trim();
+                            tr.appendChild(td);
+                        });
+                        tableBody.appendChild(tr);
+                    });
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Function to handle Teachers CSV file upload
+        document.getElementById('teachers-csv-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const text = e.target.result;
+                    const rows = text.split('\n').map(row => row.split(','));
+                    // Process the teachers' data as needed
+                    console.log(rows); // For now, just log the data to the console
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Function to download sample CSV
+        function downloadSampleCsv() {
+            const csvContent = `Class,Period,Subject 1,Subject 2,Subject 3,Subject 4,Subject 5,Subject 6,Subject 7,Subject 8,Subject 9,Subject 10
+1A,1,Math,Science,English,History,Geography,Art,Music,PE,Computers,Chemistry
+1B,2,Science,Math,History,English,Art,Geography,Music,PE,Computers,Chemistry
+2A,1,English,Math,Science,History,Geography,Art,Music,PE,Computers,Chemistry
+2B,2,Math,Science,English,History,Geography,Art,Music,PE,Computers,Chemistry`;
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sample_timetable.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Function to download sample CSV
+        function downloadSampleTeacherCsv() {
+            const csvContent = `Teacher,Classes,Subjects
+Bharath,"1,3",Mathematics,
+Arun,"2,4",Science
+Chaithra,"1,5",English`;
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sample_teachers_data.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Function to clear the page
+        function clearPage() {
+            document.getElementById('input-section').innerHTML = '';
+            document.querySelector('#output-table tbody').innerHTML = '';
+            document.getElementById('csv-upload').value = '';
+            document.getElementById('teachers-csv-upload').value = '';
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
